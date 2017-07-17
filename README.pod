@@ -4,8 +4,6 @@ Business::OnlinePayment::iTransact - iTransact backend module for Business::Onli
 
 =head1 SYNOPSIS
 
-This is a plugin for the Business::OnlinePayment interface. Please refer to that documentation for general usage, and here for iTransact specific usage.
-
   use Business::OnlinePayment;
 
   my $tx = new Business::OnlinePayment( 'iTransact',
@@ -53,6 +51,13 @@ This is a plugin for the Business::OnlinePayment interface. Please refer to that
       print "Error Message: ".$tx->error_message."\n";
       print "Error Category: " . $tx->error_category . "\n";
   }
+
+=head1 DESCRIPTION
+
+Process Credit Card transactions via iTransact's XML API Connection.
+
+This is a plugin for the Business::OnlinePayment interface. Please refer to
+that documentation for general usage, and here for iTransact specific usage.
 
 =head1 SUPPORTED TRANSACTION TYPES
 
@@ -120,12 +125,12 @@ and other transaction action types supported by iTransact.
 
 =head1 PREREQUISITES
 
-  XML::Hash::LX;
-  Digest::HMAC_SHA1;
+  Business::OnlinePayment
+  Business::OnlinePayment::HTTPS
+  XML::Hash::LX
+  Digest::HMAC_SHA1
 
-=head1 DESCRIPTION
-
-Process Credit Card transactions via iTransact's XML API Connection
+=head1 SEE ALSO
 
 Refer to iTransact's documentation for more info
 L<https://itransact.com/support/toolkit/xml-connection/api/>
@@ -142,6 +147,23 @@ Bill Gerrard <bill@gerrard.org>
 
 Business::OnlinePayment Implementation
 Bill Gerrard <bill@gerrard.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2017 Bill Gerrard
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.20.2 or,
+at your option, any later version of Perl 5 you may have available.
+
+Disclaimer of warranty: This program is provided by the copyright holder
+and contributors "As is" and without any express or implied warranties.
+The implied warranties of merchantability, fitness for a particular purpose,
+or non-infringement are disclaimed to the extent permitted by your local
+law. Unless required by law, no copyright holder or contributor will be
+liable for any direct, indirect, incidental, or consequential damages
+arising in any way out of the use of the package, even if advised of the
+possibility of such damage.
 
 =head1 SEE ALSO
 
