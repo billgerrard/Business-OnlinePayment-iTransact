@@ -7,62 +7,62 @@
 # https://itransact.com/support/toolkit/xml-connection/api/
 #
 # AUTHOR
+#
 # Bill Gerrard <bill@gerrard.org>
 #
 # BUSINESS::ONLINEPAYMENT IMPLEMENTATION
+#
 # Bill Gerrard <bill@gerrard.org>
 #
 # VERSION HISTORY
-# + v1.0	06/24/2017 Business::OnlinePayment implementation
+#
+# + v1.00	07/17/2017 Business::OnlinePayment implementation
+#
+# COPYRIGHT AND LICENSE
 #
 # Copyright (C) 2017 Bill Gerrard
 #
 # This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+# it under the same terms as Perl itself, either Perl version 5.20.2 or,
+# at your option, any later version of Perl 5 you may have available.
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public
-# License along with this program; if not, write to the Free
-# Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-# MA  02111-1307  USA.
+# Disclaimer of warranty: This program is provided by the copyright holder
+# and contributors "As is" and without any express or implied warranties.
+# The implied warranties of merchantability, fitness for a particular purpose,
+# or non-infringement are disclaimed to the extent permitted by your local
+# law. Unless required by law, no copyright holder or contributor will be
+# liable for any direct, indirect, incidental, or consequential damages
+# arising in any way out of the use of the package, even if advised of the
+# possibility of such damage.
 #
 ################################################################################
 
 package Business::OnlinePayment::iTransact;
 
+use 5.008004;
 use strict;
 use Carp;
 use Business::OnlinePayment 3;
 use Business::OnlinePayment::HTTPS;
-use vars qw($VERSION @ISA $DEBUG);
 
-# prerequisites:
+# iTransact specificprerequisites:
 use XML::Hash::LX;
 use Digest::HMAC_SHA1;
 
-use Data::Dumper;
-
-@ISA = qw(Business::OnlinePayment::HTTPS);
-$VERSION = '1.00';
-$DEBUG = 0;
+our @ISA = qw(Business::OnlinePayment::HTTPS);
+our $VERSION = '1.00';
 
 sub set_defaults {
-	my $self = shift;
+    my $self = shift;
 
-	$self->server('secure.itransact.com');
-	$self->port('443');
-	$self->path('/cgi-bin/rc/xmltrans2.cgi');
+    $self->server('secure.itransact.com');
+    $self->port('443');
+    $self->path('/cgi-bin/rc/xmltrans2.cgi');
 
-	$self->build_subs(qw(
-	  avs_category timestamp total card_type
-          error_category warning_message auth_amount
-	));
+    $self->build_subs(qw(
+        avs_category timestamp total card_type
+        error_category warning_message auth_amount
+    ));
 }
 
 sub map_fields {
@@ -185,8 +185,6 @@ sub submit {
     my ( $page, $status_code, %headers ) =
         $self->https_post( { 'Content-Type' => 'text/xml; charset=utf-8' } , $xml);
 
-    warn Dumper $self->server_response, $status_code, \%headers if $DEBUG;
-
     my $response = {};
     if ( $status_code =~ /^200/ ) {
         if ( ! eval {
@@ -250,8 +248,6 @@ Business::OnlinePayment::iTransact - iTransact backend module for Business::Onli
 
 =head1 SYNOPSIS
 
-This is a plugin for the Business::OnlinePayment interface. Please refer to that documentation for general usage, and here for iTransact specific usage.
-
   use Business::OnlinePayment;
 
   my $tx = new Business::OnlinePayment( 'iTransact',
@@ -299,6 +295,13 @@ This is a plugin for the Business::OnlinePayment interface. Please refer to that
       print "Error Message: ".$tx->error_message."\n";
       print "Error Category: " . $tx->error_category . "\n";
   }
+
+=head1 DESCRIPTION
+
+Process Credit Card transactions via iTransact's XML API Connection.
+
+This is a plugin for the Business::OnlinePayment interface. Please refer to
+that documentation for general usage, and here for iTransact specific usage.
 
 =head1 SUPPORTED TRANSACTION TYPES
 
@@ -366,12 +369,12 @@ and other transaction action types supported by iTransact.
 
 =head1 PREREQUISITES
 
-  XML::Hash::LX;
-  Digest::HMAC_SHA1;
+  Business::OnlinePayment
+  Business::OnlinePayment::HTTPS
+  XML::Hash::LX
+  Digest::HMAC_SHA1
 
-=head1 DESCRIPTION
-
-Process Credit Card transactions via iTransact's XML API Connection
+=head1 SEE ALSO
 
 Refer to iTransact's documentation for more info
 L<https://itransact.com/support/toolkit/xml-connection/api/>
@@ -388,6 +391,23 @@ Bill Gerrard <bill@gerrard.org>
 
 Business::OnlinePayment Implementation
 Bill Gerrard <bill@gerrard.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2017 Bill Gerrard
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.20.2 or,
+at your option, any later version of Perl 5 you may have available.
+
+Disclaimer of warranty: This program is provided by the copyright holder
+and contributors "As is" and without any express or implied warranties.
+The implied warranties of merchantability, fitness for a particular purpose,
+or non-infringement are disclaimed to the extent permitted by your local
+law. Unless required by law, no copyright holder or contributor will be
+liable for any direct, indirect, incidental, or consequential damages
+arising in any way out of the use of the package, even if advised of the
+possibility of such damage.
 
 =head1 SEE ALSO
 
